@@ -7,21 +7,23 @@ function setup() {
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
   rootElem.textContent = ``;
+  let template = document.getElementById("template");
   episodeList.forEach((episode) => {
-    let episodeCard = document.createElement("section");
-    episodeCard.className = "episode";
-    let title = document.createElement("h2");
-    title.textContent = episode.name;
-    let seasonAndEpisode = document.createElement("p");
+    let clone = template.content.cloneNode(true);
+    let episodeCard = document.querySelector("section");
+
+    let title = (episodeCard.querySelector("h2").textContent = episode.name);
+
     let seasonPadded = episode.season.toString().padStart(2, "0");
     let episodePadded = episode.number.toString().padStart(2, "0");
-    seasonAndEpisode.innerHTML = `S${seasonPadded}E${episodePadded}`;
-    let image = document.createElement("img");
+    episodeCard.querySelector(
+      ".seasonAndEpisode"
+    ).textContent = `S${seasonPadded}E${episodePadded}`;
+    let image = episodeCard.querySelector("img");
     image.src = episode.image.medium;
 
-    let summary = document.createElement("div");
+    let summary = episodeCard.querySelector(".summary");
     summary.innerHTML = `${episode.summary}`;
-    episodeCard.append(title, seasonAndEpisode, image, summary);
     rootElem.append(episodeCard);
   });
 }
