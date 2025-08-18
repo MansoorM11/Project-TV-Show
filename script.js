@@ -20,6 +20,7 @@ function makePageForEpisodes(episodeList) {
     ).textContent = `S${seasonPadded}E${episodePadded}`;
     let image = episodeCard.querySelector("img");
     image.src = episode.image.medium;
+    image.alt = `Still from the episode "${episode.name}"`;
 
     let summary = episodeCard.querySelector(".summary");
     summary.innerHTML = `${episode.summary}`;
