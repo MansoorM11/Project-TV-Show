@@ -7,6 +7,7 @@ function setup() {
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
   let template = document.getElementById("template");
+
   episodeList.forEach((episode) => {
     let clone = template.content.cloneNode(true);
     let episodeCard = clone.querySelector("section");
@@ -18,6 +19,7 @@ function makePageForEpisodes(episodeList) {
     episodeCard.querySelector(
       ".seasonAndEpisode"
     ).textContent = `S${seasonPadded}E${episodePadded}`;
+
     let image = episodeCard.querySelector("img");
     image.src = episode.image.medium;
     image.alt = `Still from the episode "${episode.name}"`;
