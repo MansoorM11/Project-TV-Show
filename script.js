@@ -6,13 +6,12 @@ function setup() {
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
-  rootElem.textContent = ``;
   let template = document.getElementById("template");
   episodeList.forEach((episode) => {
     let clone = template.content.cloneNode(true);
-    let episodeCard = document.querySelector("section");
+    let episodeCard = clone.querySelector("section");
 
-    let title = (episodeCard.querySelector("h2").textContent = episode.name);
+    episodeCard.querySelector("h2").textContent = episode.name;
 
     let seasonPadded = episode.season.toString().padStart(2, "0");
     let episodePadded = episode.number.toString().padStart(2, "0");
