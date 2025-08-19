@@ -16,7 +16,7 @@ function initializeApp() {
 // I create 5 functions: 
 // this is the first one name "renderEpisodeCards" is more specific than "makePageForEpisodes."
 // this function tells us what It exactly does: it renders a set of cards for episodes.
-// Renders all episodes to the page
+// Renders all episodes to the page.
 
 function renderEpisodesList(episodeList) {
   const rootElem = document.getElementById("root");
