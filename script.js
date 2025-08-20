@@ -1,19 +1,9 @@
 // script.js
-// First step : I will suggest to rename our main function. 
-// It does one job is just to set everything up.
-// and I will suggest this name "initializeApp" because is more descriptive than "setup". 
-// because it tells us that this is the starting point for our application.
-// Entry point
 function initializeApp() {
   const allEpisodes = getAllEpisodes();
   renderEpisodesList(allEpisodes);
 }
 
-// second step : I will suggest to break down this function "makePageForEpisodes" 
-// into 3 smaller, more focused functions.
-
-// This is my suggestion to extracting the large function "makePageForEpisodes."
-// I create 5 functions: 
 // this is the first one name "renderEpisodeCards" is more specific than "makePageForEpisodes."
 // this function tells us what It exactly does: it renders a set of cards for episodes.
 // Renders all episodes to the page.
@@ -56,7 +46,8 @@ function createEpisodeCard(template, episode) {
   }
 
   // Summary
-  card.querySelector(".summary").innerHTML = episode.summary || "No summary available.";
+  card.querySelector(".summary").innerHTML =
+    episode.summary || "No summary available.";
 
   return card;
 }
@@ -70,4 +61,3 @@ function formatEpisodeCode(season, number) {
 
 // Run app on load
 window.onload = initializeApp;
-
