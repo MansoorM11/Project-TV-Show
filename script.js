@@ -1,29 +1,64 @@
-// Global reference for all episodes
+// Global references
 let allEpisodes = [];
+let allShows = [];
+let showCache = {}; // Cache episodes per show ID
 
 // Entry point
-function initializeApp() {
-  const rootElem = document.getElementById("root");
-  rootElem.textContent = "Loading titles, please wait..";
+async function initializeApp() {
+  await fetchAndPopulateShows();
+  setupShowSelector();
+}
 
-  //fetch titles from TVMaze api
-  fetch("https://api.tvmaze.com/shows/82/episodes")
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("Failed to load titles");
-      }
-      return response.json();
-    })
+// Fetch list of shows and populate dropdown
+async function fetchAndPopulateShows() {
+  const response = await fetch("https://api.tvmaze.com/shows");
+  const shows = await response.json();
 
-    .then(function (data) {
-      allEpisodes = data;
-      renderEpisodesList(allEpisodes);
-      setupSearch();
-      setupEpisodeSelector();
-    })
-    .catch(function (error) {
-      rootElem.textContent = `Failed to load episodes: ${error.message}`;
-    });
+  // Sort alphabetically (case-insensitive)
+  shows.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+  allShows = shows;
+
+  const showSelect = document.getElementById("showSelect");
+  showSelect.innerHTML = ""; // Clear loading text
+
+  shows.forEach((show) => {
+    const option = document.createElement("option");
+    option.value = show.id;
+    option.textContent = show.name;
+    showSelect.appendChild(option);
+  });
+
+  // Load first show by default
+  if (shows.length > 0) {
+    loadShowEpisodes(shows[0].id);
+  }
+}
+
+// Fetch episodes for a selected show
+async function loadShowEpisodes(showId) {
+  if (showCache[showId]) {
+    allEpisodes = showCache[showId];
+  } else {
+    const response = await fetch(`https://api.tvmaze.com/shows/${showId}/episodes`);
+    const episodes = await response.json();
+    showCache[showId] = episodes;
+    allEpisodes = episodes;
+  }
+
+  renderEpisodesList(allEpisodes);
+  setupSearch();
+  setupEpisodeSelector();
+}
+
+// Handle show selection
+function setupShowSelector() {
+  const showSelect = document.getElementById("showSelect");
+  showSelect.addEventListener("change", (e) => {
+    const showId = e.target.value;
+    if (showId) {
+      loadShowEpisodes(showId);
+    }
+  });
 }
 
 // Renders all episodes to the page
@@ -114,6 +149,13 @@ function setupSearch() {
 function setupEpisodeSelector() {
   const selectElem = document.getElementById("episodeSelect");
 
+  // Clear old options
+  selectElem.innerHTML = "";
+  const allOption = document.createElement("option");
+  allOption.value = "all";
+  allOption.textContent = "Show All Episodes";
+  selectElem.appendChild(allOption);
+
   // Populate dropdown with episodes
   allEpisodes.forEach((episode) => {
     const seasonStr = String(episode.season).padStart(2, "0");
@@ -144,3 +186,5 @@ function setupEpisodeSelector() {
 
 // Run app on load
 window.onload = initializeApp;
+
+
