@@ -3,10 +3,27 @@ let allEpisodes = [];
 
 // Entry point
 function initializeApp() {
-  allEpisodes = getAllEpisodes();
-  renderEpisodesList(allEpisodes);
-  setupSearch();
-  setupEpisodeSelector();
+  const rootElem = document.getElementById("root");
+  rootElem.innerHTML = "<p>Loading titles, please wait..</p>";
+
+  //fetch titles from TVMaze api
+  fetch("https://api.tvmaze.com/shows/82/episodes")
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error("Failed to load titles");
+      }
+      return response.json();
+    })
+
+    .then(function (data) {
+      allEpisodes = data;
+      renderEpisodesList(allEpisodes);
+      setupSearch();
+      setupEpisodeSelector();
+    })
+    .catch(function (error) {
+      rootElem.textContent = `Failed to load episodes: ${error.message}`;
+    });
 }
 
 // Renders all episodes to the page
