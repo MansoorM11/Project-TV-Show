@@ -9,6 +9,14 @@
   </head>
 
   <body>
+    <header>
+      <input type="text" id="searchInput" placeholder="Search episodes..." />
+      <select id="episodeSelect">
+        <option value="all">Show All Episodes</option>
+      </select>
+      <p id="searchCount"></p>
+    </header>
+
     <template id="template">
       <section>
         <h2>Film title</h2>
@@ -17,17 +25,19 @@
         <p class="summary">Summary</p>
       </section>
     </template>
-    <div id="root"></div>
-    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-    <script src="episodes.js"></script>
 
-    <!-- Loads YOUR javascript code -->
-    <script src="script.js"></script>
+    <div id="root"></div>
+
     <footer>
       <p>
         All of the tv show data is provided by
-        <a href="https://www.tvmaze.com/">TVMaze</a>
+        <a href="https://www.tvmaze.com/" target="_blank">TVMaze</a>
       </p>
     </footer>
+
+    <!-- Provided episodes function -->
+    <script src="episodes.js"></script>
+    <!-- Level 200 script -->
+    <script src="script.js"></script>
   </body>
 </html>
