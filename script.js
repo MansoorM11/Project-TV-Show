@@ -1,37 +1,31 @@
-// script.js
-// First step : I will suggest to rename our main function. 
-// It does one job is just to set everything up.
-// and I will suggest this name "initializeApp" because is more descriptive than "setup". 
-// because it tells us that this is the starting point for our application.
+// Global reference for all episodes
+let allEpisodes = [];
+
 // Entry point
 function initializeApp() {
-  const allEpisodes = getAllEpisodes();
+  allEpisodes = getAllEpisodes();
   renderEpisodesList(allEpisodes);
+  setupSearch();
+  setupEpisodeSelector();
 }
 
-// second step : I will suggest to break down this function "makePageForEpisodes" 
-// into 3 smaller, more focused functions.
-
-// This is my suggestion to extracting the large function "makePageForEpisodes."
-// I create 5 functions: 
-// this is the first one name "renderEpisodeCards" is more specific than "makePageForEpisodes."
-// this function tells us what It exactly does: it renders a set of cards for episodes.
-// Renders all episodes to the page.
-
+// Renders a list of episodes
 function renderEpisodesList(episodeList) {
   const rootElem = document.getElementById("root");
   const template = document.getElementById("template");
-
-  // Clear any existing content before rendering
   rootElem.innerHTML = "";
 
   episodeList.forEach((episode) => {
     const episodeCard = createEpisodeCard(template, episode);
+    episodeCard.id = `episode-${episode.id}`; // Add unique ID for scrolling
     rootElem.appendChild(episodeCard);
   });
+
+  // Update count
+  updateEpisodeCount(episodeList.length);
 }
 
-// Creates a single episode card from template
+// Creates a single episode card
 function createEpisodeCard(template, episode) {
   const clone = template.content.cloneNode(true);
   const card = clone.querySelector("section");
@@ -39,7 +33,7 @@ function createEpisodeCard(template, episode) {
   // Title
   card.querySelector("h2").textContent = episode.name;
 
-  // Season/Episode code
+  // Season/Episode
   card.querySelector(".seasonAndEpisode").textContent = formatEpisodeCode(
     episode.season,
     episode.number
@@ -61,13 +55,91 @@ function createEpisodeCard(template, episode) {
   return card;
 }
 
-// Formats season and episode numbers as S01E02
+// Formats S01E01
 function formatEpisodeCode(season, number) {
   const seasonPadded = season.toString().padStart(2, "0");
   const episodePadded = number.toString().padStart(2, "0");
   return `S${seasonPadded}E${episodePadded}`;
 }
 
-// Run app on load
+// Update displayed episode count
+function updateEpisodeCount(count) {
+  let counterElem = document.getElementById("searchCount");
+  if (!counterElem) {
+    counterElem = document.createElement("p");
+    counterElem.id = "searchCount";
+    const header = document.querySelector("body");
+    header.insertBefore(counterElem, document.getElementById("root"));
+  }
+  counterElem.textContent = `Displaying ${count} / ${allEpisodes.length} episodes`;
+}
+
+// Search functionality
+function setupSearch() {
+  let searchInput = document.getElementById("searchInput");
+  if (!searchInput) {
+    searchInput = document.createElement("input");
+    searchInput.id = "searchInput";
+    searchInput.placeholder = "Search episodes...";
+    const body = document.querySelector("body");
+    body.insertBefore(searchInput, document.getElementById("root"));
+  }
+
+  searchInput.addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const filteredEpisodes = allEpisodes.filter((episode) => {
+      const nameMatch = episode.name.toLowerCase().includes(searchTerm);
+      const summaryMatch = episode.summary
+        ? episode.summary.toLowerCase().includes(searchTerm)
+        : false;
+      return nameMatch || summaryMatch;
+    });
+    renderEpisodesList(filteredEpisodes);
+  });
+}
+
+// Episode selector functionality
+function setupEpisodeSelector() {
+  let selectElem = document.getElementById("episodeSelect");
+  if (!selectElem) {
+    selectElem = document.createElement("select");
+    selectElem.id = "episodeSelect";
+    const showAllOption = document.createElement("option");
+    showAllOption.value = "all";
+    showAllOption.textContent = "Show All Episodes";
+    selectElem.appendChild(showAllOption);
+
+    const body = document.querySelector("body");
+    body.insertBefore(selectElem, document.getElementById("root"));
+  }
+
+  allEpisodes.forEach((episode) => {
+    const seasonStr = String(episode.season).padStart(2, "0");
+    const numberStr = String(episode.number).padStart(2, "0");
+    const option = document.createElement("option");
+    option.value = episode.id;
+    option.textContent = `S${seasonStr}E${numberStr} - ${episode.name}`;
+    selectElem.appendChild(option);
+  });
+
+  selectElem.addEventListener("change", (e) => {
+    const selectedValue = e.target.value;
+    if (selectedValue === "all") {
+      renderEpisodesList(allEpisodes);
+      return;
+    }
+    const selectedEpisode = allEpisodes.find((ep) => ep.id == selectedValue);
+    if (selectedEpisode) {
+      renderEpisodesList([selectedEpisode]);
+      setTimeout(() => {
+        const epElem = document.getElementById(`episode-${selectedEpisode.id}`);
+        if (epElem) epElem.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    }
+  });
+}
+
+// Start app
 window.onload = initializeApp;
+
 
