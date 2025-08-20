@@ -11,6 +11,13 @@
   <body>
     <header>
       <input type="text" id="searchInput" placeholder="Search episodes..." />
+
+      <label for="showSelect">Choose a show:</label>
+      <select id="showSelect">
+        <option value="">Loading shows...</option>
+      </select>
+
+      <label for="episodeSelect">Choose an episode:</label>
       <select id="episodeSelect">
         <option value="all">Show All Episodes</option>
       </select>
@@ -31,13 +38,13 @@
     <footer>
       <p>
         All of the tv show data is provided by
-        <a href="https://www.tvmaze.com/" target="_blank">TVMaze</a>
+        <a href="https://www.tvmaze.com/" target="_blank" rel="noopener">TVMaze</a>
       </p>
     </footer>
 
     <!-- Provided episodes function -->
     <script src="episodes.js"></script>
-    <!-- Level 200 script -->
+    <!-- Level 400 script -->
     <script src="script.js"></script>
   </body>
 </html>
