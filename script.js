@@ -1,24 +1,30 @@
-// script.js
+// Global reference for all episodes
+let allEpisodes = [];
+
+// Entry point
 function initializeApp() {
-  const allEpisodes = getAllEpisodes();
+  allEpisodes = getAllEpisodes();
   renderEpisodesList(allEpisodes);
+  setupSearch();
+  setupEpisodeSelector();
 }
 
-// this is the first one name "renderEpisodeCards" is more specific than "makePageForEpisodes."
-// this function tells us what It exactly does: it renders a set of cards for episodes.
-// Renders all episodes to the page.
-
+// Renders all episodes to the page
 function renderEpisodesList(episodeList) {
   const rootElem = document.getElementById("root");
   const template = document.getElementById("template");
 
-  // Clear any existing content before rendering
+  // Clear existing content
   rootElem.innerHTML = "";
 
   episodeList.forEach((episode) => {
     const episodeCard = createEpisodeCard(template, episode);
+    episodeCard.id = `episode-${episode.id}`; // Unique ID for scrolling
     rootElem.appendChild(episodeCard);
   });
+
+  // Update count
+  updateEpisodeCount(episodeList.length);
 }
 
 // Creates a single episode card from template
@@ -29,7 +35,7 @@ function createEpisodeCard(template, episode) {
   // Title
   card.querySelector("h2").textContent = episode.name;
 
-  // Season/Episode code
+  // Season/Episode
   card.querySelector(".seasonAndEpisode").textContent = formatEpisodeCode(
     episode.season,
     episode.number
@@ -52,11 +58,71 @@ function createEpisodeCard(template, episode) {
   return card;
 }
 
-// Formats season and episode numbers as S01E02
+// Formats S01E01
 function formatEpisodeCode(season, number) {
   const seasonPadded = season.toString().padStart(2, "0");
   const episodePadded = number.toString().padStart(2, "0");
   return `S${seasonPadded}E${episodePadded}`;
+}
+
+// Updates displayed episode count
+function updateEpisodeCount(count) {
+  let counterElem = document.getElementById("searchCount");
+  if (!counterElem) {
+    counterElem = document.createElement("p");
+    counterElem.id = "searchCount";
+    const header = document.querySelector("header");
+    header.appendChild(counterElem);
+  }
+  counterElem.textContent = `Displaying ${count} / ${allEpisodes.length} episodes`;
+}
+
+// Sets up live search
+function setupSearch() {
+  const searchInput = document.getElementById("searchInput");
+  searchInput.addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    const filteredEpisodes = allEpisodes.filter((episode) => {
+      const nameMatch = episode.name.toLowerCase().includes(searchTerm);
+      const summaryMatch = episode.summary
+        ? episode.summary.toLowerCase().includes(searchTerm)
+        : false;
+      return nameMatch || summaryMatch;
+    });
+    renderEpisodesList(filteredEpisodes);
+  });
+}
+
+// Sets up episode selector dropdown
+function setupEpisodeSelector() {
+  const selectElem = document.getElementById("episodeSelect");
+
+  // Populate dropdown with episodes
+  allEpisodes.forEach((episode) => {
+    const seasonStr = String(episode.season).padStart(2, "0");
+    const numberStr = String(episode.number).padStart(2, "0");
+    const option = document.createElement("option");
+    option.value = episode.id;
+    option.textContent = `S${seasonStr}E${numberStr} - ${episode.name}`;
+    selectElem.appendChild(option);
+  });
+
+  selectElem.addEventListener("change", (e) => {
+    const selectedValue = e.target.value;
+    if (selectedValue === "all") {
+      renderEpisodesList(allEpisodes);
+      return;
+    }
+    const selectedEpisode = allEpisodes.find((ep) => ep.id == selectedValue);
+    if (selectedEpisode) {
+      renderEpisodesList([selectedEpisode]);
+      setTimeout(() => {
+        const epElem = document.getElementById(`episode-${selectedEpisode.id}`);
+        if (epElem)
+          epElem.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    }
+  });
 }
 
 // Run app on load
