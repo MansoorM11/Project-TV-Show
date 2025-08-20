@@ -4,7 +4,7 @@ let allEpisodes = [];
 // Entry point
 function initializeApp() {
   const rootElem = document.getElementById("root");
-  rootElem.innerHTML = "<p>Loading titles, please wait..</p>";
+  rootElem.textContent = "Loading titles, please wait..";
 
   //fetch titles from TVMaze api
   fetch("https://api.tvmaze.com/shows/82/episodes")
