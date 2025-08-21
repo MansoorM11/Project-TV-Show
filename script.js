@@ -223,7 +223,6 @@ function displayShowsList(shows) {
     }
 
     showCard.addEventListener("click", () => {
-      loadShowEpisodes(show.id);
       // Load episodes for the selected show
       loadShowEpisodes(show.id);
 
