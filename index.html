@@ -10,7 +10,12 @@
 
   <body>
     <header>
-      <input type="text" id="searchInput" placeholder="Search episodes..." />
+      <label for="searchShowsInput">Search a show:</label>
+      <input
+        type="text"
+        id="searchShowsInput"
+        placeholder="Search shows by name, genres, and summary"
+      />
       <div id="episodeControls" style="display: none"></div>
       <label for="showSelect">Choose a show:</label>
       <select id="showSelect">
@@ -46,14 +51,11 @@
     </template>
 
     <section id="shows-section">
-      <input
-        type="text"
-        id="searchShowsInput"
-        placeholder="Search shows by name, genres, and summary"
-      />
       <div id="allShowsContainer"></div>
     </section>
     <section id="episode-section">
+      <input type="text" id="searchInput" placeholder="Search episodes..." />
+
       <div id="root"></div>
     </section>
     <footer>
