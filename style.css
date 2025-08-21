@@ -58,6 +58,12 @@ label[for="episodeSelect"] {
   display: none;
 }
 
+/*  change cursor to pointer when over show titles */
+.show-title {
+  cursor: pointer; /* Shows pointer on hover */
+  background-color: #f0c040;
+}
+
 /* Grid for episode cards */
 #root {
   display: grid;
