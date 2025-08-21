@@ -29,11 +29,6 @@ async function fetchAndPopulateShows() {
     option.textContent = show.name;
     showSelect.appendChild(option);
   });
-
-  // Load first show by default
-  if (shows.length > 0) {
-    loadShowEpisodes(shows[0].id);
-  }
 }
 
 // Fetch episodes for a selected show
