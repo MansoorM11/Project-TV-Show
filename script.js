@@ -6,7 +6,7 @@ let showCache = {}; // Cache episodes per show ID
 //Entry point
 async function initializeApp() {
   await fetchAndPopulateShows();
-  setupShowSelector();
+  setup;
 
   // Setup home link to go back to the home page
   const homePage = document.getElementById("homePage");
@@ -39,16 +39,6 @@ async function fetchAndPopulateShows() {
     a.name.toLowerCase().localeCompare(b.name.toLowerCase())
   );
   allShows = shows;
-
-  const showSelect = document.getElementById("showSelect");
-  showSelect.innerHTML = ""; // Clear loading text
-
-  shows.forEach((show) => {
-    const option = document.createElement("option");
-    option.value = show.id;
-    option.textContent = show.name;
-    showSelect.appendChild(option);
-  });
 
   //display all the shows
   displayShowsList(allShows);
@@ -170,6 +160,8 @@ function displayShowsList(shows) {
       // Hide shows section, show episode section
       document.getElementById("shows-section").style.display = "none";
       document.getElementById("episode-section").style.display = "block";
+      document.querySelector('label[for="episodeSelect"]').style.display =
+        "inline";
 
       document.getElementById("homePage").style.display = "inline";
     });
