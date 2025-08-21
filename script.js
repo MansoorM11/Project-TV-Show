@@ -3,6 +3,11 @@ let allEpisodes = [];
 let allShows = [];
 let showCache = {}; // Cache episodes per show ID
 
+// capture search show labels and input in order to toggle on and off based on selection
+const searchShowsLabel = document.querySelector(
+  'label[for="searchShowsInput"]'
+);
+const searchShowsInput = document.getElementById("searchShowsInput");
 //Entry point
 async function initializeApp() {
   await fetchAndPopulateShows();
@@ -219,25 +224,29 @@ function displayShowsList(shows) {
 
     showCard.addEventListener("click", () => {
       loadShowEpisodes(show.id);
+      // Load episodes for the selected show
+      loadShowEpisodes(show.id);
 
       // Hide shows section, show episode section
       document.getElementById("shows-section").style.display = "none";
       document.getElementById("episode-section").style.display = "block";
-      document.querySelector('label[for="episodeSelect"]').style.display =
-        "inline";
-      document.getElementById("homePage").style.display = "inline";
 
-      // Show episode dropdown
+      // Hide landing page search input and label when viewing episodes
+      if (searchShowsInput) searchShowsInput.style.display = "none";
+      if (searchShowsLabel) searchShowsLabel.style.display = "none";
+
+      // Show episode dropdown and label
       const episodeLabel = document.querySelector('label[for="episodeSelect"]');
       const episodeSelect = document.getElementById("episodeSelect");
       if (episodeLabel) episodeLabel.style.display = "inline";
       if (episodeSelect) episodeSelect.style.display = "inline";
 
-      // Hide landing page search input and counter
-      const searchShowsInput = document.getElementById("searchShowsInput");
+      // Show Home Page link
+      document.getElementById("homePage").style.display = "inline";
+
+      // Keep the episode counter visible
       const searchCount = document.getElementById("searchCount");
-      if (searchShowsInput) searchShowsInput.style.display = "none";
-      if (searchCount) searchCount.style.display = "none";
+      if (searchCount) searchCount.style.display = "block";
     });
 
     container.appendChild(clone);
