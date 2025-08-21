@@ -6,8 +6,7 @@ let showCache = {}; // Cache episodes per show ID
 //Entry point
 async function initializeApp() {
   await fetchAndPopulateShows();
-  setup;
-
+  setupShowSearch();
   // Setup home link to go back to the home page
   const homePage = document.getElementById("homePage");
 
@@ -42,6 +41,12 @@ async function fetchAndPopulateShows() {
 
   //display all the shows
   displayShowsList(allShows);
+
+  // Display the number of shows
+  const searchCount = document.getElementById("searchCount");
+  if (searchCount) {
+    searchCount.textContent = `Displaying ${allShows.length} / ${allShows.length} shows`;
+  }
 }
 
 //Fetch episodes for a selected show
@@ -92,6 +97,47 @@ function renderEpisodesList(episodeList) {
 
   //Update count
   updateEpisodeCount(episodeList.length);
+}
+
+function setupShowSearch() {
+  const searchShowsInput = document.getElementById("searchShowsInput");
+  const searchCount = document.getElementById("searchCount");
+
+  searchShowsInput.addEventListener("input", function (inputEvent) {
+    const searchTerm = inputEvent.target.value.toLowerCase().trim();
+
+    const filterShows = allShows.filter((show) => {
+      //Check show name
+      const showName = show.name.toLowerCase().includes(searchTerm);
+
+      //Check show summary
+      let showSummary;
+      if (show.summary) {
+        showSummary = show.summary.toLowerCase().includes(searchTerm);
+      } else {
+        showSummary = false;
+      }
+
+      //check genre
+      let showGenre = false;
+      if (Array.isArray(show.genres)) {
+        for (const genre of show.genres) {
+          if (genre.toLowerCase().includes(searchTerm)) {
+            showGenre = true;
+            break;
+          }
+        }
+      }
+      return showName || showSummary || showGenre;
+    });
+
+    //render filter shows
+    displayShowsList(filterShows);
+
+    // update counter
+
+    searchCount.textContent = `Displaying ${filterShows.length} / ${allShows.length} shows`;
+  });
 }
 
 function displayShowsList(shows) {
@@ -162,8 +208,13 @@ function displayShowsList(shows) {
       document.getElementById("episode-section").style.display = "block";
       document.querySelector('label[for="episodeSelect"]').style.display =
         "inline";
-
       document.getElementById("homePage").style.display = "inline";
+
+      // Hide landing page search input and counter
+      const searchShowsInput = document.getElementById("searchShowsInput");
+      const searchCount = document.getElementById("searchCount");
+      if (searchShowsInput) searchShowsInput.style.display = "none";
+      if (searchCount) searchCount.style.display = "none";
     });
 
     container.appendChild(clone);
