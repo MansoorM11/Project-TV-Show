@@ -15,7 +15,9 @@ async function fetchAndPopulateShows() {
   const shows = await response.json();
 
   // Sort alphabetically (case-insensitive)
-  shows.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+  shows.sort((a, b) =>
+    a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+  );
   allShows = shows;
 
   const showSelect = document.getElementById("showSelect");
@@ -39,7 +41,9 @@ async function loadShowEpisodes(showId) {
   if (showCache[showId]) {
     allEpisodes = showCache[showId];
   } else {
-    const response = await fetch(`https://api.tvmaze.com/shows/${showId}/episodes`);
+    const response = await fetch(
+      `https://api.tvmaze.com/shows/${showId}/episodes`
+    );
     const episodes = await response.json();
     showCache[showId] = episodes;
     allEpisodes = episodes;
@@ -186,5 +190,3 @@ function setupEpisodeSelector() {
 
 // Run app on load
 window.onload = initializeApp;
-
-
