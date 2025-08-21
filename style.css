@@ -53,6 +53,11 @@ header {
   color: #333;
 }
 
+#episodeSelect,
+label[for="episodeSelect"] {
+  display: none;
+}
+
 /* Grid for episode cards */
 #root {
   display: grid;
