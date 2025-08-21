@@ -144,6 +144,13 @@ function displayShowsList(shows) {
     } else {
       showRuntime.textContent = `Runtime: Not available`;
     }
+
+    showCard.addEventListener("click", () => {
+      loadShowEpisodes(show.id);
+      document.getElementById("allShowsContainer").style.display = "none";
+      document.getElementById("episode-section").style.display = "block";
+    });
+
     container.appendChild(clone);
   });
 }
