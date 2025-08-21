@@ -7,6 +7,15 @@ let showCache = {}; // Cache episodes per show ID
 async function initializeApp() {
   await fetchAndPopulateShows();
   setupShowSelector();
+
+  // Setup home link to go back to the home page
+  const homePage = document.getElementById("homePage");
+  homePage.addEventListener("click", (clickEvent) => {
+    clickEvent.preventDefault(); // prevent default link behavior
+    document.getElementById("allShowsContainer").style.display = "grid"; // show all shows
+    document.getElementById("episode-section").style.display = "none"; // hide episode section
+    homePage.style.display = "none"; // hide home link itself
+  });
 }
 
 //Fetch list of shows and populate dropdown
