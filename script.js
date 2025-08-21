@@ -10,11 +10,22 @@ async function initializeApp() {
 
   // Setup home link to go back to the home page
   const homePage = document.getElementById("homePage");
+
   homePage.addEventListener("click", (clickEvent) => {
-    clickEvent.preventDefault(); // prevent default link behavior
-    document.getElementById("allShowsContainer").style.display = "grid"; // show all shows
-    document.getElementById("episode-section").style.display = "none"; // hide episode section
-    homePage.style.display = "none"; // hide home link itself
+    clickEvent.preventDefault();
+
+    // Show the shows section
+    document.getElementById("shows-section").style.display = "block";
+
+    // Hide the episode section
+    document.getElementById("episode-section").style.display = "none";
+
+    // Hide Home Page link
+    homePage.style.display = "none";
+
+    // Clear episode search and results
+    document.getElementById("searchInput").value = "";
+    document.getElementById("root").innerHTML = "";
   });
 }
 
@@ -41,7 +52,6 @@ async function fetchAndPopulateShows() {
 
   //display all the shows
   displayShowsList(allShows);
-  setupShowSearch();
 }
 
 //Fetch episodes for a selected show
@@ -156,8 +166,11 @@ function displayShowsList(shows) {
 
     showCard.addEventListener("click", () => {
       loadShowEpisodes(show.id);
-      document.getElementById("allShowsContainer").style.display = "none";
+
+      // Hide shows section, show episode section
+      document.getElementById("shows-section").style.display = "none";
       document.getElementById("episode-section").style.display = "block";
+
       document.getElementById("homePage").style.display = "inline";
     });
 

@@ -15,12 +15,20 @@ header {
   background-color: #f2f2f2;
 }
 
+#allShowsContainer {
+  display: grid; /* the actual grid for shows */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  column-gap: 1.5rem;
+  row-gap: 1.8rem;
+}
+
 #episode-section {
   display: none;
 }
 
-#show-section {
-  display: block;
+#shows-section {
+  display: block; /* just a container */
+  padding: 1.3rem;
 }
 
 #searchInput {
