@@ -149,6 +149,7 @@ function displayShowsList(shows) {
       loadShowEpisodes(show.id);
       document.getElementById("allShowsContainer").style.display = "none";
       document.getElementById("episode-section").style.display = "block";
+      document.getElementById();
     });
 
     container.appendChild(clone);
