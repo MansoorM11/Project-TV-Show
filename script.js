@@ -219,12 +219,6 @@ function formatEpisodeCode(season, number) {
 //Updates displayed episode count
 function updateEpisodeCount(count) {
   let counterElem = document.getElementById("searchCount");
-  if (!counterElem) {
-    counterElem = document.createElement("p");
-    counterElem.id = "searchCount";
-    const header = document.querySelector("header");
-    header.appendChild(counterElem);
-  }
   counterElem.textContent = `Displaying ${count} / ${allEpisodes.length} episodes`;
 }
 
