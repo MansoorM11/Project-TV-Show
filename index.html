@@ -10,18 +10,19 @@
 
   <body>
     <header>
-      <input type="text" id="searchInput" placeholder="Search episodes..." />
-
-      <label for="showSelect">Choose a show:</label>
-      <select id="showSelect">
-        <option value="">Loading shows...</option>
-      </select>
+      <label for="searchShowsInput">Search a show:</label>
+      <input
+        type="text"
+        id="searchShowsInput"
+        placeholder="Search shows by name, genres, and summary"
+      />
 
       <label for="episodeSelect">Choose an episode:</label>
       <select id="episodeSelect">
         <option value="all">Show All Episodes</option>
       </select>
       <p id="searchCount"></p>
+      <a href="#" id="homePage" style="display: none">Home Page</a>
     </header>
 
     <template id="template">
@@ -33,17 +34,35 @@
       </section>
     </template>
 
-    <div id="root"></div>
+    <template id="show-template">
+      <section class="show-card">
+        <h2 class="show-title"></h2>
+        <img class="show-img" src="" alt="" />
+        <p class="show-summary">Summary</p>
+        <p class="show-genre"></p>
+        <p class="show-status"></p>
+        <p class="show-rating"></p>
+        <p class="show-runtime"></p>
+      </section>
+    </template>
 
+    <section id="shows-section">
+      <div id="allShowsContainer"></div>
+    </section>
+    <section id="episode-section">
+      <input type="text" id="searchInput" placeholder="Search episodes..." />
+
+      <div id="root"></div>
+    </section>
     <footer>
       <p>
         All of the tv show data is provided by
-        <a href="https://www.tvmaze.com/" target="_blank" rel="noopener">TVMaze</a>
+        <a href="https://www.tvmaze.com/" target="_blank" rel="noopener"
+          >TVMaze</a
+        >
       </p>
     </footer>
 
-    <!-- Provided episodes function -->
-    <script src="episodes.js"></script>
     <!-- Level 400 script -->
     <script src="script.js"></script>
   </body>

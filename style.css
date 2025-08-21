@@ -6,9 +6,29 @@ body {
 }
 
 header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
   padding: 10px;
   text-align: center;
   background-color: #f2f2f2;
+}
+
+#allShowsContainer {
+  display: grid; /* the actual grid for shows */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  column-gap: 1.5rem;
+  row-gap: 1.8rem;
+}
+
+#episode-section {
+  display: none;
+}
+
+#shows-section {
+  display: block; /* just a container */
+  padding: 1.3rem;
 }
 
 #searchInput {
@@ -31,6 +51,17 @@ header {
   margin-top: 5px;
   font-size: 0.9rem;
   color: #333;
+}
+
+#episodeSelect,
+label[for="episodeSelect"] {
+  display: none;
+}
+
+/*  change cursor to pointer when over show titles */
+.show-title {
+  cursor: pointer; /* Shows pointer on hover */
+  background-color: #f0c040;
 }
 
 /* Grid for episode cards */
