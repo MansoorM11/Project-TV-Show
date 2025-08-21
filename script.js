@@ -49,6 +49,9 @@ async function loadShowEpisodes(showId) {
     allEpisodes = episodes;
   }
 
+  // show episode  section once user clicks on a show
+  document.getElementById("episode-section").style.display = "block";
+
   renderEpisodesList(allEpisodes);
   setupSearch();
   setupEpisodeSelector();
