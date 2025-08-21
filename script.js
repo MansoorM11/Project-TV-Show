@@ -25,6 +25,23 @@ async function initializeApp() {
     // Clear episode search and results
     document.getElementById("searchInput").value = "";
     document.getElementById("root").innerHTML = "";
+
+    // Show landing page search input
+    const searchShowsInput = document.getElementById("searchShowsInput");
+    if (searchShowsInput) searchShowsInput.style.display = "inline";
+
+    // Hide episode dropdown and label
+    const episodeLabel = document.querySelector('label[for="episodeSelect"]');
+    const episodeSelect = document.getElementById("episodeSelect");
+    if (episodeLabel) episodeLabel.style.display = "none";
+    if (episodeSelect) episodeSelect.style.display = "none";
+
+    // Reset counter for shows
+    const searchCount = document.getElementById("searchCount");
+    if (searchCount) {
+      searchCount.textContent = `Displaying ${allShows.length} / ${allShows.length} shows`;
+      searchCount.style.display = "block";
+    }
   });
 }
 
@@ -209,6 +226,12 @@ function displayShowsList(shows) {
       document.querySelector('label[for="episodeSelect"]').style.display =
         "inline";
       document.getElementById("homePage").style.display = "inline";
+
+      // Show episode dropdown
+      const episodeLabel = document.querySelector('label[for="episodeSelect"]');
+      const episodeSelect = document.getElementById("episodeSelect");
+      if (episodeLabel) episodeLabel.style.display = "inline";
+      if (episodeSelect) episodeSelect.style.display = "inline";
 
       // Hide landing page search input and counter
       const searchShowsInput = document.getElementById("searchShowsInput");
